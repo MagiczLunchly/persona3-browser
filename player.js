@@ -87,6 +87,10 @@ async function downloadGame() {
   return new File(chunks, 'persona3portable.iso', {type:'application/octet-stream'});
 }
 (async () => {
+  if (!window.crossOriginIsolated || typeof SharedArrayBuffer === 'undefined') {
+    status.textContent = 'This embed needs browser isolation enabled on the surrounding website. Open the player directly or update the hosting settings.';
+    return;
+  }
   try {
     database = await openDatabase();
     const file = await readGame();
