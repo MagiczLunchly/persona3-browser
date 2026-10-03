@@ -47,7 +47,7 @@ function boot(file, remembered = true) {
   window.EJS_onGameStart = () => { document.getElementById('note').hidden = remembered; };
   document.getElementById('setup').hidden = true;
   document.getElementById('note').hidden = false;
-  document.getElementById('note').textContent = remembered ? 'Loading… Click the game to enable play and sound.' : 'Game could not be remembered. Select it again next time. Click to enable play and sound.';
+  document.getElementById('note').textContent = remembered ? 'Loading… Click the game to enable play and sound.' : 'Loading… Click the game to enable play and sound. The game will download again next visit.';
   const script = document.createElement('script');
   script.src = window.EJS_pathtodata + 'loader.js';
   script.crossOrigin = 'anonymous';
@@ -59,23 +59,32 @@ function boot(file, remembered = true) {
   document.body.append(script);
 }
 choose.onclick = () => location.reload();
-function downloadGame() {
-  return new Promise((resolve, reject) => {
-    const request = new XMLHttpRequest();
-    request.open('GET', '/persona3portable.iso');
-    request.responseType = 'blob';
-    request.onprogress = event => {
-      const size = event.lengthComputable ? event.total : 1321861120;
-      status.textContent = `Downloading game… ${Math.min(100, Math.round(event.loaded / size * 100))}%`;
-    };
-    request.onload = () => {
-      if (request.status !== 200 || !request.response || request.response.size !== 1321861120) {
-        reject(new Error('The game download is unavailable or incomplete. Please try again.'));
-      } else resolve(new File([request.response], 'persona3portable.iso', {type:'application/octet-stream'}));
-    };
-    request.onerror = () => reject(new Error('Could not download the game. Check your connection and try again.'));
-    request.send();
-  });
+async function downloadGame() {
+  const size = 1321861120, chunkSize = 4 * 1024 * 1024;
+  const count = Math.ceil(size / chunkSize), chunks = new Array(count);
+  let next = 0, loaded = 0;
+  async function worker() {
+    while (next < count) {
+      const index = next++, start = index * chunkSize, end = Math.min(size - 1, start + chunkSize - 1);
+      let lastError;
+      for (let attempt = 0; attempt < 3; attempt++) {
+        try {
+          const response = await fetch(`/api/game?start=${start}&end=${end}`);
+          if (!response.ok) throw new Error('The game download is unavailable. Please try again shortly.');
+          const blob = await response.blob();
+          if (blob.size !== end-start+1) throw new Error('The game download is incomplete. Please try again.');
+          chunks[index] = blob;
+          loaded += blob.size;
+          status.textContent = `Downloading game… ${Math.round(loaded / size * 100)}%`;
+          lastError = null;
+          break;
+        } catch (error) { lastError = error; }
+      }
+      if (lastError) throw lastError;
+    }
+  }
+  await Promise.all(Array.from({length:4}, worker));
+  return new File(chunks, 'persona3portable.iso', {type:'application/octet-stream'});
 }
 (async () => {
   try {
