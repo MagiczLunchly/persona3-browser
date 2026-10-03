@@ -1,5 +1,5 @@
 'use strict';
-const GAME_URL = 'https://github.com/MagiczLunchly/persona3-browser/releases/download/game-v1/Shin%20Megami%20Tensei%20-%20Persona%203%20Portable%20%28USA%29.iso';
+const GAME_URL = 'https://github.com/MagiczLunchly/persona3-browser/releases/download/game-v1/persona3portable.iso';
 const SIZE = 1321861120;
 module.exports = async function handler(req, res) {
   if (req.method !== 'GET') { res.setHeader('Allow','GET'); return res.status(405).end(); }
