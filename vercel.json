@@ -1,0 +1,13 @@
+{
+  "rewrites": [{
+    "source": "/persona3portable.iso",
+    "destination": "https://github.com/MagiczLunchly/persona3-browser/releases/download/game-v1/Shin%20Megami%20Tensei%20-%20Persona%203%20Portable%20%28USA%29.iso"
+  }],
+  "headers": [{
+    "source": "/(.*)",
+    "headers": [
+      {"key": "Cross-Origin-Opener-Policy", "value": "same-origin"},
+      {"key": "Cross-Origin-Embedder-Policy", "value": "require-corp"}
+    ]
+  }]
+}

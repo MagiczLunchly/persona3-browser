@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Persona 3 Portable · Play</title>
+<meta name="description" content="Play your own Persona 3 Portable PSP copy in your browser.">
+<link rel="icon" href="/favicon.svg">
+<style>
+:root{color-scheme:dark;font-family:Arial,sans-serif;background:#07101f;color:#f4f8ff}*{box-sizing:border-box}body{margin:0}header{height:68px;padding:0 5vw;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #29384e}header strong{letter-spacing:.06em;font-size:16px}header span{color:#9eafc8;font-size:14px}main{height:calc(100dvh - 68px);min-height:460px;position:relative}#game{height:100%;width:100%;background:#000}#setup{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(125deg,#092b52,#07101f 65%);padding:24px}#setup[hidden]{display:none}.panel{width:min(100%,500px);border-left:4px solid #40bcff;padding:24px 28px}.eyebrow{color:#63caff;letter-spacing:.22em;font-size:14px}h1{font-size:clamp(32px,6vw,52px);line-height:1.04;margin:20px 0}p{font-size:16px;line-height:1.6;color:#bdcde0}button{font:700 16px Arial;padding:15px 22px;border:0;background:#59c7ff;color:#041428;cursor:pointer}button:disabled{opacity:.6;cursor:wait}button:focus-visible{outline:3px solid white;outline-offset:4px}#status{margin-top:18px;min-height:26px}#note{position:absolute;bottom:14px;left:16px;right:16px;text-align:center;font-size:14px;color:#ccd9e8;pointer-events:none}input{display:none}@media(max-width:500px){header{padding:0 20px}header span{display:none}.panel{padding:12px 20px}}
+</style>
+</head>
+<body>
+<header><strong>PERSONA 3 PORTABLE</strong><span>PSP · Browser player</span></header>
+<main><div id="game"></div><section id="setup"><div class="panel"><div class="eyebrow">PSP · BROWSER PLAYER</div><h1>Persona 3<br>Portable</h1><p>Your game is loading. The first visit downloads the game; later visits can use the saved copy in this browser.</p><button id="choose" hidden>Retry loading</button><p id="status" role="status" aria-live="polite">Checking for your saved game…</p></div></section><div id="note" hidden>Click the game to enable play and sound.</div></main>
+<script src="/player.js"></script>
+</body></html>
